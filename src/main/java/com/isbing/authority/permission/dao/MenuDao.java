@@ -1,6 +1,10 @@
 package com.isbing.authority.permission.dao;
 
+import com.isbing.authority.permission.entity.Menu;
+import com.isbing.authority.permission.entity.PageBean;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * Created by song bing
@@ -9,4 +13,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MenuDao {
 
+	List<Menu> getAll();
+
+	List getFirstAll();
 }

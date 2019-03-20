@@ -11,13 +11,10 @@ import javax.annotation.Resource;
 @SpringBootTest
 public class AuthorityApplicationTests {
 
-	@Resource
-	private UsersService usersService;
 
 	@Test
 	public void contextLoads() {
-		User user = usersService.getById("11");
-		System.out.println(user);
+
 	}
 
 }
