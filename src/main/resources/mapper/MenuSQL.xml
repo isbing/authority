@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isbing.authority.permission.dao.MenuDao">
+    <resultMap id="menuResult" type="com.isbing.authority.permission.entity.Menu">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="selectSQL">
+        select id, name,icon,url,parent_id,sort,create_time from menu
+    </sql>
+
+    <select id="getById"  parameterType="string" resultMap="menuResult">
+        <include refid="selectSQL" />
+        where id = #{id}
+    </select>
+
+</mapper>
