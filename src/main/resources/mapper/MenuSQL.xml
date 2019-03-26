@@ -14,7 +14,7 @@
         select id,`name`,icon,url,parent_id,sort,create_time from menu
     </sql>
 
-    <select id="getAllFirstLevel"  parameterType="string" resultMap="menuResult">
+    <select id="getAllFirstLevel" resultMap="menuResult">
         <include refid="selectSQL" />
         where (parent_id is null or parent_id = 0)
         order by sort desc
@@ -24,6 +24,12 @@
         <include refid="selectSQL" />
         where parent_id = #{value}
         order by sort desc
+    </select>
+
+    <select id="getAllSecondLevelNoId" resultMap="menuResult">
+        <include refid="selectSQL" />
+        where parent_id > 0
+        order by create_time desc
     </select>
 
     <insert id="insert" parameterType="com.isbing.authority.permission.entity.Menu">

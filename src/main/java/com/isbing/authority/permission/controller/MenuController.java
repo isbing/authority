@@ -37,8 +37,19 @@ public class MenuController {
 	 */
 	@GetMapping("getAllSecondLevel")
 	@ResponseBody
-	public List<Menu> getAllSecondLevel(@RequestParam(value = "parentId") int parentId){
+	public List<Menu> getAllSecondLevel(@RequestParam(value = "parentId",required = false) int parentId){
 		return menuService.getAllSecondLevel(parentId);
+	}
+
+	/**
+	 * 菜单管理  这样的 不用分页
+	 * 找所有菜单的二级菜单
+	 * @return
+	 */
+	@GetMapping("getAllSecondLevelNoId")
+	@ResponseBody
+	public List<Menu> getAllSecondLevelNoId(){
+		return menuService.getAllSecondLevelNoId();
 	}
 
 	/**

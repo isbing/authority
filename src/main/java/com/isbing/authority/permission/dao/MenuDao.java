@@ -22,4 +22,6 @@ public interface MenuDao {
 	void update(Menu menu);
 
 	List<Menu> getAllSecondLevel(int parentId);
+
+	List<Menu> getAllSecondLevelNoId();
 }

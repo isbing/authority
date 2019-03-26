@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by song bing
@@ -29,7 +30,9 @@ public class MenuService {
 		// 增加冗余字段
 		if(CollectionUtils.isNotEmpty(menuList)){
 			Menu parentMenu = getById(parentId);
-			menuList.forEach(menu -> menu.setParentUrl(parentMenu.getUrl()));
+			if(Objects.nonNull(parentMenu)){
+				menuList.forEach(menu -> menu.setParentUrl(parentMenu.getUrl()));
+			}
 		}
 		return menuList;
 	}
@@ -46,5 +49,9 @@ public class MenuService {
 
 	public void update(Menu menu) {
 		menuDao.update(menu);
+	}
+
+	public List<Menu> getAllSecondLevelNoId() {
+		return menuDao.getAllSecondLevelNoId();
 	}
 }

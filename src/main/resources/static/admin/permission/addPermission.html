@@ -39,18 +39,16 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">权限名称：</label>
                             <div class="col-sm-9">
-                                <input id="permName" placeholder="权限名称" name="permName" class="form-control notNull" type="text">
+                                <input id="name" placeholder="权限名称" name="name" class="form-control notNull" type="text">
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label">权限Code：</label>
 
                             <div class="col-sm-9">
-                                <input id="permCode" placeholder="权限Code" name="permCode" class="form-control notNull">
+                                <input id="code" placeholder="权限Code" name="code" class="form-control notNull">
                             </div>
                         </div>
-
 
                     </div>
                 </div>
@@ -69,20 +67,17 @@
 
 <script type="application/javascript">
 
-    getAllMenus("menus", null);
-
-
-
+    getAllSecondMenus("menus");
 
     /**
      * 获取所有的 二级 菜单
      * @param id
      * @param async
      */
-    function getAllMenus(id, async) {
+    function getAllSecondMenus(id) {
         $.ajax({
-            type: "POST",
-            url: "/menu/getAllByParentMenuIsNotNull",
+            type: "GET",
+            url: "/menu/getAllSecondLevelNoId",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
@@ -90,7 +85,7 @@
                 size: 999,
                 page: 0
             },
-            async: async == null ? true : async,
+            async: false,
             dataType: "json",
             success: function (data) {
                 if (data.code == '1003') {
@@ -100,8 +95,8 @@
                     if (data != null) {
                         $("#" + id).empty();
                         $("#" + id).append("<option value=''>请选择</option>");
-                        for (var i = 0; i < data.content.length; i++) {
-                            $("#" + id).append("<option value='" + data.content[i].id + "'>" + data.content[i].name + "--" + data.content[i].url + "</option>");
+                        for (var i = 0; i < data.length; i++) {
+                            $("#" + id).append("<option value='" + data[i].id + "'>" + data[i].name + "--" + data[i].url + "</option>");
                         }
 
                     }
@@ -125,15 +120,11 @@
         if (isNull) {
             return false;
         }
-
         var permission = {};
 
-        var menus = {};
-        menus.id = $("#menus").val();
-
-        permission.permName = $("#permName").val();
-        permission.permCode = $("#permCode").val();
-        permission.menus = menus;
+        permission.name = $("#name").val();
+        permission.code = $("#code").val();
+        permission.menuId = $("#menus").val();
 
         $.ajax({
             type: "POST",
