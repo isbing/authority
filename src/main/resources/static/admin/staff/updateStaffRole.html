@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置权限</title>
+    <link rel="shortcut icon" href="/resource/favicon.ico">
+    <link href="/resource/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/resource/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/resource/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/resource/css/animate.css" rel="stylesheet">
+    <link href="/resource/css/style.css?v=4.0.0" rel="stylesheet">
+
+    <script src="/resource/js/plugins/My97DatePicker/WdatePicker.js"></script>
+    <script src="/resource/js/plugins/ckeditor/ckeditor.js"></script>
+
+</head>
+<body>
+<div class="col-sm-12">
+    <div class="tab-content m-t-sm">
+        <div id="tab-1" class="tab-pane active">
+            <div class="row m-t-sm m-b-sm">
+                <div style="padding-top: 7px; float: left;margin-left: 15px">
+                    <button onclick="setStaffRole()" type="button" class="btn btn-sm btn-primary"> 确定
+                    </button>
+                </div>
+            </div>
+            <div class="full-height-scroll">
+                <div class="table-responsive">
+                    <table id="roleTable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>角色名称</th>
+                            <th>角色CODE</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="/resource/js/bootstrap.min.js?v=3.3.5"></script>
+<script src="/resource/js/content.js?v=1.0.0"></script>
+<script src="/resource/js/ajaxfileupload.js?v=1.0.0"></script>
+<script src="/resource/js/plugins/layer/layer.min.js"></script>
+
+<script src="/resource/js/jquery.cookie.js"></script>
+<script src="/resource/js/util.js"></script>
+
+<script type="application/javascript">
+    var userId = location.search.substring(1);//获取查询串
+    var users = {};
+    //获取所有的角色
+    getStaff();
+    function getStaff() {
+        $.ajax({
+            type: "POST",
+            url: "/users/getById",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            data: {
+                id: userId
+            },
+            async: false,
+            datatype: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                } else if (data.code == '200') {
+                    data = data.data;
+                    if (data != null) {
+                        users = data;
+                        searchAll(0);
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+    function searchAll(pageNumber) {
+        $.ajax({
+            type: "POST",
+            url: "/role/getAll",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            data: {
+                size: 999,
+                page: pageNumber
+            },
+            async: false,
+            datatype: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                } else if (data.code == '200') {
+                    data = data.data;
+                    if (data != null) {
+                        $("#roleTable tbody").empty();
+                        for (var i = 0; i < data.content.length; i++) {
+                            var isHave = false;
+                            if (users.role != null && users.role.length > 0) {
+                                for (var j = 0; j < users.role.length; j++) {
+                                    if (users.role[j].id == data.content[i].id) {
+                                        isHave = true;
+                                    }
+                                }
+                            }
+                            var inputText = "<input type='checkbox' data='" + checkedStr(data.content[i].id) + "'>&nbsp;";
+                            if (isHave) {
+                                inputText = "<input checked='checked' type='checkbox' data='" + checkedStr(data.content[i].id) + "'>&nbsp;";
+                            }
+                            $("#roleTable tbody").append("<tr>" +
+                                "<th>" + inputText + (i + 1) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].roleName) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].roleCode) + "</th>" +
+                                "</tr>");
+                        }
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+
+        });
+    }
+
+    function setStaffRole() {
+        var role = new Array();
+        $("#roleTable tbody input[type=checkbox]").each(function () {
+            if ($(this).is(':checked')) {
+                var roles = {};
+                roles.id = $(this).attr("data");
+                role.push(roles);
+            }
+        });
+        if (role.length <= 0) {
+            layer.msg("请选择要设置的角色");
+            return false;
+        }
+        users.role = role;
+        $.ajax({
+            type: "POST",
+            url: "/users/update",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(users),
+            datatype: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                } else if (data.code == '200') {
+                    layer.msg("设置成功!");
+
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+
+        });
+    }
+
+
+
+</script>
+
+</body>
+
+</html>

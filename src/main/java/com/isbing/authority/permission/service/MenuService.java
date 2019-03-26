@@ -16,8 +16,8 @@ public class MenuService {
 	@Resource
 	private MenuDao menuDao;
 
-	public PageBean getAll() {
-		return PageBean.builder().data(menuDao.getAll()).build();
+	public PageBean getAllFirstLevel() {
+		return PageBean.builder().content(menuDao.getAllFirstLevel()).build();
 	}
 
 	/**
@@ -25,6 +25,6 @@ public class MenuService {
 	 * @return
 	 */
 	public PageBean getFirstAll() {
-		return PageBean.builder().data(menuDao.getFirstAll()).build();
+		return PageBean.builder().content(menuDao.getFirstAll()).build();
 	}
 }

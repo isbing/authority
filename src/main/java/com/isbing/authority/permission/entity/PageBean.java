@@ -18,7 +18,7 @@ import java.util.List;
 public class PageBean {
 	private long totalCount;//总记录数
 	private int pages;//总页数
-	private List data;//当前页数据
+	private List content;//当前页数据
 	public static int PAGE_SIZE = 10;
 
 	/**

@@ -14,8 +14,9 @@
         select id, name,icon,url,parent_id,sort,create_time from menu
     </sql>
 
-    <select id="getAll"  parameterType="string" resultMap="menuResult">
+    <select id="getAllFirstLevel"  parameterType="string" resultMap="menuResult">
         <include refid="selectSQL" />
+        where parent_id is null
         order by sort asc
     </select>
 

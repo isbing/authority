@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设置权限</title>
+    <link rel="shortcut icon" href="/resource/favicon.ico">
+    <link href="/resource/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/resource/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/resource/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/resource/css/animate.css" rel="stylesheet">
+    <link href="/resource/css/style.css?v=4.0.0" rel="stylesheet">
+
+    <script src="/resource/js/plugins/My97DatePicker/WdatePicker.js"></script>
+    <script src="/resource/js/plugins/ckeditor/ckeditor.js"></script>
+
+</head>
+<body>
+<div class="col-sm-12">
+    <div class="tab-content m-t-sm">
+        <div id="tab-1" class="tab-pane active">
+            <div class="row m-t-sm m-b-sm">
+                <div style="padding-top: 7px; float: left;margin-left: 15px">
+                    <button onclick="setRolePerm()" type="button" class="btn btn-sm btn-primary"> 确定
+                    </button>
+                </div>
+            </div>
+            <div class="full-height-scroll">
+                <div class="table-responsive">
+                    <table id="permTable" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" id="jobAllSelect">全选</th>
+                            <th>权限名称</th>
+                            <th>权限Code</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="/resource/js/bootstrap.min.js?v=3.3.5"></script>
+<script src="/resource/js/content.js?v=1.0.0"></script>
+<script src="/resource/js/ajaxfileupload.js?v=1.0.0"></script>
+<script src="/resource/js/plugins/layer/layer.min.js"></script>
+
+<script src="/resource/js/jquery.cookie.js"></script>
+<script src="/resource/js/util.js"></script>
+
+<script type="application/javascript">
+    var roleId = location.search.substring(1);//获取查询串
+    var roles = {};
+    //获取角色权限
+    getRole();
+
+    function getRole() {
+        $.ajax({
+            type: "POST",
+            url: "/role/getById",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            async: false,
+            data: {
+                id: roleId
+            },
+            datatype: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                } else if (data.code == '200') {
+                    data = data.data;
+                    if (data != null) {
+                        roles = data;
+                        searchAll(0);
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+    function searchAll(pageNumber) {
+        $.ajax({
+            type: "POST",
+            url: "/permission/getAll",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            data: {
+                size: 999,
+                page: pageNumber
+            },
+            async: false,
+            datatype: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                } else if (data.code == '200') {
+                    data = data.data;
+                    if (data != null) {
+                        $("#permTable tbody").empty();
+                        for (var i = 0; i < data.content.length; i++) {
+                            var isHave = false;
+                            if (roles.permission != null && roles.permission.length > 0) {
+                                for (var j = 0; j < roles.permission.length; j++) {
+                                    if (roles.permission[j].id == data.content[i].id) {
+                                        isHave = true;
+                                    }
+                                }
+                            }
+                            var inputText = "<input type='checkbox' data='" + checkedStr(data.content[i].id) + "'>&nbsp;";
+                            if (isHave) {
+                                inputText = "<input checked='checked' type='checkbox' data='" + checkedStr(data.content[i].id) + "'>&nbsp;";
+                            }
+                            $("#permTable tbody").append("<tr>" +
+                                "<th>" + inputText + (i + 1) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].permName) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].permCode) + "</th>" +
+                                "</tr>");
+                        }
+
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+    function setRolePerm() {
+        var perm = new Array();
+        $("#permTable tbody input[type=checkbox]").each(function () {
+            if ($(this).is(':checked')) {
+                var permission = {};
+                permission.id = $(this).attr("data");
+                perm.push(permission);
+            }
+        });
+        roles.permission = perm;
+        $.ajax({
+            type: "POST",
+            url: "/role/update",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(roles),
+            datatype: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                } else if (data.code == '200') {
+                    layer.msg("设置成功!");
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+</script>
+
+</body>
+
+</html>

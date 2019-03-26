@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改权限</title>
+    <link rel="shortcut icon" href="/resource/favicon.ico">
+    <link href="/resource/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/resource/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/resource/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/resource/css/animate.css" rel="stylesheet">
+    <link href="/resource/css/style.css?v=4.0.0" rel="stylesheet">
+
+    <script src="/resource/js/plugins/My97DatePicker/WdatePicker.js"></script>
+    <script src="/resource/js/plugins/ckeditor/ckeditor.js"></script>
+
+</head>
+<body>
+<div class="col-sm-12">
+    <div class="tab-content m-t-sm">
+        <div id="tab-1" class="tab-pane active">
+            <div class="row m-t-sm m-b-sm">
+                <div style="padding-top: 7px; float: left;margin-left: 15px">
+                    <button onclick="updatePermission()" type="button" class="btn btn-sm btn-primary"> 确定
+                    </button>
+                </div>
+            </div>
+            <div class="full-height-scroll">
+                <div class="ibox-content">
+                    <div class="form-horizontal m-t" id="agentForm">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所属菜单：</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" placeholder="所属菜单" id="menus" name="menus">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">权限名称：</label>
+                            <div class="col-sm-9">
+                                <input id="permName" placeholder="权限名称" name="permName" class="form-control notNull" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">权限Code：</label>
+
+                            <div class="col-sm-9">
+                                <input id="permCode" placeholder="权限Code" name="permCode" class="form-control notNull">
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="/resource/js/bootstrap.min.js?v=3.3.5"></script>
+<script src="/resource/js/content.js?v=1.0.0"></script>
+<script src="/resource/js/ajaxfileupload.js?v=1.0.0"></script>
+<script src="/resource/js/plugins/layer/layer.min.js"></script>
+
+<script src="/resource/js/jquery.cookie.js"></script>
+<script src="/resource/js/util.js"></script>
+
+<script type="application/javascript">
+
+    var permissionId = location.search.substring(1);
+
+    getAllMenus("menus", false);
+
+    getById(permissionId);
+
+    var permission = {};
+
+
+    function getById(id) {
+        $.ajax({
+            type: "GET",
+            url: "/permission/getById",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/admin/signin.html";
+                } else if (data.code == '200') {
+                    data = data.data;
+                    if (data != null) {
+                        permission = data;
+                        if(data.menus!=null){
+                            $("#menus").val(data.menus.id);
+                        }
+                        $("#permName").val(data.permName);
+                        $("#permCode").val(data.permCode);
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+
+    /**
+     * 获取所有的 二级 菜单
+     * @param id
+     * @param async
+     */
+    function getAllMenus(id, async) {
+        $.ajax({
+            type: "POST",
+            url: "/menu/getAllByParentMenuIsNotNull",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            data: {
+                size: 999,
+                page: 0
+            },
+            async: async == null ? true : async,
+            dataType: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/admin/signin.html";
+                } else if (data.code == '200') {
+                    data = data.data;
+                    if (data != null) {
+                        $("#" + id).empty();
+                        $("#" + id).append("<option value=''>请选择</option>");
+                        for (var i = 0; i < data.content.length; i++) {
+                            $("#" + id).append("<option value='" + data.content[i].id + "'>" + data.content[i].name + "--" + data.content[i].url + "</option>");
+                        }
+
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+    function updatePermission() {
+        var isNull = false;
+        $(".notNull").each(function () {
+            if ($(this).val() == null || $(this).val() == "") {
+                isNull = true;
+                $(this).focus();
+                layer.msg($(this).attr("placeholder") + "不能为空");
+            }
+        });
+        if (isNull) {
+            return false;
+        }
+
+
+        var menus = {};
+        menus.id = $("#menus").val();
+
+        permission.permName = $("#permName").val();
+        permission.permCode = $("#permCode").val();
+        permission.menus = menus;
+
+        $.ajax({
+            type: "POST",
+            url: "/permission/create",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(permission),
+            datatype: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                } else if (data.code == '200') {
+                    layer.msg("提交成功!");
+                    setTimeout(closeIndex(), 1000);
+
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+
+    function closeIndex() {
+        var index = parent.layer.getFrameIndex(window.name); //获取当前窗体索引
+        parent.layer.close(index); //执行关闭
+    }
+
+</script>
+
+</body>
+
+</html>

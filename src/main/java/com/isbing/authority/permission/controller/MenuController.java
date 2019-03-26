@@ -4,6 +4,7 @@ import com.isbing.authority.permission.entity.Menu;
 import com.isbing.authority.permission.entity.PageBean;
 import com.isbing.authority.permission.service.MenuService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,13 +22,13 @@ public class MenuController {
 
 	/**
 	 * 菜单管理  这样的 不用分页
-	 * 找所有菜单
+	 * 找所有菜单的一级菜单
 	 * @return
 	 */
-	@RequestMapping("getAll")
+	@GetMapping("getAll")
 	@ResponseBody
-	public PageBean getAll(){
-		return menuService.getAll();
+	public PageBean getAllFirstLevel(){
+		return menuService.getAllFirstLevel();
 	}
 
 
@@ -40,4 +41,6 @@ public class MenuController {
 	public PageBean getFirstAll(){
 		return menuService.getFirstAll();
 	}
+
+
 }

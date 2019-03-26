@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface MenuDao {
 
-	List<Menu> getAll();
+	List<Menu> getAllFirstLevel();
 
 	List getFirstAll();
 }
