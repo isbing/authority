@@ -64,7 +64,7 @@
     function searchAll(pageNumber) {
         $.ajax({
             type: "GET",
-            url: "/menu/getAll",
+            url: "/menu/getAllFirstLevel",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
@@ -110,7 +110,7 @@
         });
     }
 
-    //新增菜单组
+    //新增一级菜单
     function addMenu() {
         parent.layer.open({
             type: 2,

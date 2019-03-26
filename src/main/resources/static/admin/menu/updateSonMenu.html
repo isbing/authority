@@ -41,6 +41,13 @@
                                 <input id="url" placeholder="URI" name="url" class="form-control notNull">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">二级菜单排列顺序：</label>
+                            <div class="col-sm-9">
+                                <input id="sort" placeholder="sort" name="sort" class="form-control notNull">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,9 +86,10 @@
                 } else if (data.code == '200') {
                     data = data.data;
                     if (data != null) {
-                        menus = data;
+                        //menus = data;
                         $("#name").val(data.name);
                         $("#url").val(data.url);
+                        $("#sort").val(data.sort);
                     }
                 } else {
                     layer.msg(data.message);
@@ -107,6 +115,9 @@
         }
         menus.name = $("#name").val();
         menus.url = $("#url").val();
+        menus.sort = $("#sort").val();
+        menus.id = menuId;
+
 
         $.ajax({
             type: "PUT",

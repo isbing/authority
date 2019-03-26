@@ -41,6 +41,13 @@
                                 <input id="ico" placeholder="图标" name="ico" class="form-control notNull">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">排列顺序：</label>
+                            <div class="col-sm-9">
+                                <input id="sort" placeholder="排列顺序" name="sort" class="form-control notNull">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,7 +85,8 @@
                     data = data.data;
                     if (data != null) {
                         $("#name").val(data.name);
-                        $("#ico").val(data.ico);
+                        $("#ico").val(data.icon);
+                        $("#sort").val(data.sort);
                     }
                 } else {
                     layer.msg(data.message);
@@ -105,7 +113,8 @@
         var menus = {};
         menus.name = $("#name").val();
         menus.url = "<i class='" + $("#ico").val() + "'></i><span class='nav-label'>&nbsp;" + $("#name").val() + "</span>";
-        menus.ico = $("#ico").val();
+        menus.icon = $("#ico").val();
+        menus.sort = $("#sort").val();
         // 更新需要设置 主键
         menus.id = menuId;
         $.ajax({

@@ -41,6 +41,14 @@
                                 <input id="url" placeholder="URI" name="url" class="form-control notNull">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">二级菜单排列顺序：</label>
+
+                            <div class="col-sm-9">
+                                <input id="sort" placeholder="sort" name="sort" class="form-control notNull">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,9 +65,7 @@
 <script src="/resource/js/util.js"></script>
 
 <script type="application/javascript">
-
     var menuId = location.search.substring(1);
-
 
     function addMenu() {
         var isNull = false;
@@ -74,12 +80,11 @@
             return false;
         }
         var menus = {};
-        var parentMenu = {};
-        parentMenu.id = menuId;
         menus.name = $("#name").val();
         menus.url = $("#url").val();
-        menus.parentMenu = parentMenu;
-
+        menus.sort = $("#sort").val();
+        // 设置父菜单
+        menus.parentId = menuId;
         $.ajax({
             type: "POST",
             url: "/menu/create",

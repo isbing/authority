@@ -11,13 +11,51 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="selectSQL">
-        select id, name,icon,url,parent_id,sort,create_time from menu
+        select id,`name`,icon,url,parent_id,sort,create_time from menu
     </sql>
 
     <select id="getAllFirstLevel"  parameterType="string" resultMap="menuResult">
         <include refid="selectSQL" />
-        where parent_id is null
-        order by sort asc
+        where (parent_id is null or parent_id = 0)
+        order by sort desc
     </select>
+
+    <select id="getAllSecondLevel"  parameterType="int" resultMap="menuResult">
+        <include refid="selectSQL" />
+        where parent_id = #{value}
+        order by sort desc
+    </select>
+
+    <insert id="insert" parameterType="com.isbing.authority.permission.entity.Menu">
+        insert into menu(`name`,icon,url,parent_id,sort,create_time) values(#{name},#{icon},#{url},#{parentId},#{sort},now())
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <select id="getById"  parameterType="int" resultMap="menuResult">
+        <include refid="selectSQL" />
+        where id = #{value}
+    </select>
+
+
+    <update id="update" parameterType="com.isbing.authority.permission.entity.Menu">
+        update menu
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="icon != null">
+                icon = #{icon},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="sort > 0">
+                sort = #{sort},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
 </mapper>

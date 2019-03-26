@@ -4,11 +4,10 @@ import com.isbing.authority.permission.entity.Menu;
 import com.isbing.authority.permission.entity.PageBean;
 import com.isbing.authority.permission.service.MenuService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by song bing
@@ -25,22 +24,47 @@ public class MenuController {
 	 * 找所有菜单的一级菜单
 	 * @return
 	 */
-	@GetMapping("getAll")
+	@GetMapping("getAllFirstLevel")
 	@ResponseBody
 	public PageBean getAllFirstLevel(){
 		return menuService.getAllFirstLevel();
 	}
 
-
 	/**
-	 * 找所有的一级菜单
+	 * 菜单管理  这样的 不用分页
+	 * 找所有菜单的二级菜单
 	 * @return
 	 */
-	@RequestMapping("getFirstAll")
+	@GetMapping("getAllSecondLevel")
 	@ResponseBody
-	public PageBean getFirstAll(){
-		return menuService.getFirstAll();
+	public List<Menu> getAllSecondLevel(@RequestParam(value = "parentId") int parentId){
+		return menuService.getAllSecondLevel(parentId);
 	}
 
+	/**
+	 * 新增一级菜单
+	 * @return
+	 */
+	@PostMapping("create")
+	@ResponseBody
+	public Integer create(@RequestBody Menu menu){
+		return menuService.create(menu);
+	}
 
+	/**
+	 * 根据ID查找菜单信息
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("getById")
+	@ResponseBody
+	public Menu getById(@RequestParam(value = "id") Integer id){
+		return menuService.getById(id);
+	}
+
+	@PutMapping("update")
+	@ResponseBody
+	public void update(@RequestBody Menu menu){
+		menuService.update(menu);
+	}
 }

@@ -3,9 +3,13 @@ package com.isbing.authority.permission.service;
 import com.isbing.authority.permission.dao.MenuDao;
 import com.isbing.authority.permission.entity.Menu;
 import com.isbing.authority.permission.entity.PageBean;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by song bing
@@ -20,11 +24,27 @@ public class MenuService {
 		return PageBean.builder().content(menuDao.getAllFirstLevel()).build();
 	}
 
-	/**
-	 * 找出所有的一级菜单
-	 * @return
-	 */
-	public PageBean getFirstAll() {
-		return PageBean.builder().content(menuDao.getFirstAll()).build();
+	public List<Menu> getAllSecondLevel(int parentId) {
+		List<Menu> menuList = menuDao.getAllSecondLevel(parentId);
+		// 增加冗余字段
+		if(CollectionUtils.isNotEmpty(menuList)){
+			Menu parentMenu = getById(parentId);
+			menuList.forEach(menu -> menu.setParentUrl(parentMenu.getUrl()));
+		}
+		return menuList;
+	}
+
+
+	public Integer create(Menu menu) {
+		menuDao.insert(menu);
+		return menu.getId();
+	}
+
+	public Menu getById(Integer id) {
+		return menuDao.getById(id);
+	}
+
+	public void update(Menu menu) {
+		menuDao.update(menu);
 	}
 }

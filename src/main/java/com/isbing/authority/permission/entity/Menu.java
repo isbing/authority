@@ -24,4 +24,7 @@ public class Menu {
 	private int parentId;//二级菜单关联的一级菜单ID
 	private int sort;//排序字段
 	private Date createTime;//创建时间
+
+	// 冗余展示字段
+	private String parentUrl;//父类的
 }

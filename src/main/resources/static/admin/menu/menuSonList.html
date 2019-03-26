@@ -39,6 +39,7 @@
                             <th>所属主菜单</th>
                             <th>菜单名称</th>
                             <th>url</th>
+                            <th>二级菜单的排序顺序</th>
                             <th>编辑</th>
                         </tr>
                         </thead>
@@ -69,14 +70,14 @@
     function searchAll(pageNumber) {
         $.ajax({
             type: "GET",
-            url: "/menu/getByParentMenuId",
+            url: "/menu/getAllSecondLevel",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
             data: {
                 size: 999,
                 page: pageNumber,
-                menuId:menuId
+                parentId:menuId
             },
             dataType: "json",
             success: function (data) {
@@ -89,9 +90,10 @@
                         for (var i = 0; i < data.length; i++) {
                             $("#table tbody").append("<tr>" +
                                 "<th><input type='checkbox' data='" + checkedStr(data[i].id) + "'>&nbsp;" + data[i].id + "</th>" +
-                                "<th>" + checkedStr(data[i].parentMenu.url) + "</th>" +
+                                "<th>" + checkedStr(data[i].parentUrl) + "</th>" +
                                 "<th>" + checkedStr(data[i].name) + "</th>" +
                                 "<th>" + checkedStr(data[i].url) + "</th>" +
+                                "<th>" + checkedStr(data[i].sort) + "</th>" +
                                 "<th><a onclick='updateSonMenu(\"" + data[i].id + "\")'>修改</a></th>" +
                                 "</tr>");
                         }

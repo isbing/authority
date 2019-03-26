@@ -15,5 +15,11 @@ public interface MenuDao {
 
 	List<Menu> getAllFirstLevel();
 
-	List getFirstAll();
+	Integer insert(Menu menu);
+
+	Menu getById(Integer id);
+
+	void update(Menu menu);
+
+	List<Menu> getAllSecondLevel(int parentId);
 }
