@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">角色名称：</label>
                             <div class="col-sm-9">
-                                <input id="roleName" placeholder="角色名称" name="roleName" class="form-control notNull" type="text">
+                                <input id="name" placeholder="角色名称" name="name" class="form-control notNull" type="text">
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@
                             <label class="col-sm-2 control-label">角色Code：</label>
 
                             <div class="col-sm-9">
-                                <input id="roleCode" placeholder="角色Code" name="roleCode" class="form-control notNull">
+                                <input id="code" placeholder="角色Code" name="code" class="form-control notNull">
                             </div>
                         </div>
 
@@ -61,13 +61,8 @@
 <script src="/resource/js/util.js"></script>
 
 <script type="application/javascript">
-
     var roleId = location.search.substring(1);
-
     getById(roleId);
-
-    var role = {};
-
 
     function getById(id) {
         $.ajax({
@@ -86,10 +81,8 @@
                 } else if (data.code == '200') {
                     data = data.data;
                     if (data != null) {
-                        role = data;
-
-                        $("#roleName").val(data.roleName);
-                        $("#roleCode").val(data.roleCode);
+                        $("#name").val(data.name);
+                        $("#code").val(data.code);
                     }
                 } else {
                     layer.msg(data.message);
@@ -112,12 +105,13 @@
             return false;
         }
 
-
-        role.roleName = $("#roleName").val();
-        role.roleCode = $("#roleCode").val();
+        var role = {};
+        role.name = $("#name").val();
+        role.code = $("#code").val();
+        role.id = roleId;
 
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: "/role/update",
             'headers': {
                 'x-auth-token': $.cookie('token')
@@ -138,8 +132,6 @@
             }
         });
     }
-
-
 
     function closeIndex() {
         var index = parent.layer.getFrameIndex(window.name); //获取当前窗体索引

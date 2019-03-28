@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isbing.authority.permission.dao.RoleDao">
+    <resultMap id="roleResult" type="com.isbing.authority.permission.entity.Role">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="selectSQL">
+        select id,`name`,code,create_time from role
+    </sql>
+
+    <select id="getAll" resultMap="roleResult">
+        <include refid="selectSQL"/>
+        order by create_time desc
+    </select>
+
+    <insert id="insert" parameterType="com.isbing.authority.permission.entity.Role">
+        insert into role(`name`,code,create_time) values(#{name},#{code},now())
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <select id="getById" parameterType="int" resultMap="roleResult">
+        <include refid="selectSQL"/>
+        where id = #{value}
+    </select>
+
+    <update id="update" parameterType="com.isbing.authority.permission.entity.Role">
+        update role
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

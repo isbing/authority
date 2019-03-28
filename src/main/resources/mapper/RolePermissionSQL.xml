@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isbing.authority.permission.dao.RolePermissionDao">
+    <resultMap id="rolePermissionResult" type="com.isbing.authority.permission.entity.RolePermission">
+        <result column="role_id" property="roleId" jdbcType="INTEGER"/>
+        <result column="permission_id" property="permissionId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="selectSQL">
+        select role_id,permission_id from role_permission
+    </sql>
+
+    <select id="getByRoleId" resultMap="rolePermissionResult">
+        <include refid="selectSQL"/>
+        where role_id = #{value}
+    </select>
+
+</mapper>

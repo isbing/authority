@@ -64,7 +64,7 @@
     searchAll(0);
     function searchAll(pageNumber) {
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: "/role/getAll",
             'headers': {
                 'x-auth-token': $.cookie('token')
@@ -84,8 +84,8 @@
                         for (var i = 0; i < data.content.length; i++) {
                             $("#table tbody").append("<tr>" +
                                 "<th>" + checkedStr(data.content[i].id) + "</th>" +
-                                "<th>" + checkedStr(data.content[i].roleName) + "</th>" +
-                                "<th>" + checkedStr(data.content[i].roleCode) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].name) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].code) + "</th>" +
                                 "<th><a onclick='setPerm(\"" + data.content[i].id + "\")'>设置权限</a></th>" +
                                 "<th><a onclick='updateRole(\"" + data.content[i].id + "\")'>修改</a></th>" +
                                 "</tr>");

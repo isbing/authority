@@ -32,7 +32,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">角色名称：</label>
                             <div class="col-sm-9">
-                                <input id="roleName" placeholder="角色名称" name="roleName" class="form-control notNull" type="text">
+                                <input id="name" placeholder="角色名称" name="name" class="form-control notNull" type="text">
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@
                             <label class="col-sm-2 control-label">角色Code：</label>
 
                             <div class="col-sm-9">
-                                <input id="roleCode" placeholder="角色Code" name="roleCode" class="form-control notNull">
+                                <input id="code" placeholder="角色Code" name="code" class="form-control notNull">
                             </div>
                         </div>
 
@@ -76,8 +76,8 @@
         }
 
         var role = {};
-        role.roleName = $("#roleName").val();
-        role.roleCode = $("#roleCode").val();
+        role.name = $("#name").val();
+        role.code = $("#code").val();
 
         $.ajax({
             type: "POST",

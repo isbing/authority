@@ -56,42 +56,49 @@
 
 <script type="application/javascript">
     var roleId = location.search.substring(1);//获取查询串
-    var roles = {};
-    //获取角色权限
-    getRole();
 
-    function getRole() {
+    var permissionIds = new Array();
+    // 先去查找关联表 获取当前角色已选中的 权限列表
+    getPermissionByRoleId(roleId);
+
+
+    function getPermissionByRoleId(roleId){
         $.ajax({
-            type: "POST",
-            url: "/role/getById",
+            type: "GET",
+            url: "/rolePermission/getByRoleId",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
-            async: false,
             data: {
-                id: roleId
+                roleId: roleId
             },
+            async: false,
             datatype: "json",
             success: function (data) {
                 if (data.code == '1003') {
                     window.location = "/signin.html";
                 } else if (data.code == '200') {
                     data = data.data;
-                    if (data != null) {
-                        roles = data;
-                        searchAll(0);
+                    if(data != null){
+                        for(var i=0; i<data.length; i++){
+                            // 压入数组
+                            permissionIds.push(data[i]);
+                        }
+                        console.log(permissionIds);
                     }
+                    // 然后再去查询所有的权限列表
+                    searchAll(0);
                 } else {
                     layer.msg(data.message);
                 }
             }
         });
-    }
 
+    }
 
     function searchAll(pageNumber) {
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: "/permission/getAll",
             'headers': {
                 'x-auth-token': $.cookie('token')
@@ -111,9 +118,9 @@
                         $("#permTable tbody").empty();
                         for (var i = 0; i < data.content.length; i++) {
                             var isHave = false;
-                            if (roles.permission != null && roles.permission.length > 0) {
-                                for (var j = 0; j < roles.permission.length; j++) {
-                                    if (roles.permission[j].id == data.content[i].id) {
+                            if (permissionIds != null && permissionIds.length > 0) {
+                                for (var j = 0; j < permissionIds.length; j++) {
+                                    if (permissionIds[j] == data.content[i].id) {
                                         isHave = true;
                                     }
                                 }
@@ -124,8 +131,8 @@
                             }
                             $("#permTable tbody").append("<tr>" +
                                 "<th>" + inputText + (i + 1) + "</th>" +
-                                "<th>" + checkedStr(data.content[i].permName) + "</th>" +
-                                "<th>" + checkedStr(data.content[i].permCode) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].name) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].code) + "</th>" +
                                 "</tr>");
                         }
 
@@ -142,20 +149,23 @@
         var perm = new Array();
         $("#permTable tbody input[type=checkbox]").each(function () {
             if ($(this).is(':checked')) {
-                var permission = {};
-                permission.id = $(this).attr("data");
-                perm.push(permission);
+                var permissionId = $(this).attr("data");
+                perm.push(permissionId);
             }
         });
-        roles.permission = perm;
+        // 用逗号拼接的字符串
+        var permissionIds = perm.join(",");
+
         $.ajax({
             type: "POST",
-            url: "/role/update",
+            url: "/rolePermission/setRolePermission",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(roles),
+            data: {
+                roleId:roleId,
+                permissionIds:permissionIds
+            },
             datatype: "json",
             success: function (data) {
                 if (data.code == '1003') {
