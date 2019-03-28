@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>设置权限</title>
+    <title>给用户设置角色</title>
     <link rel="shortcut icon" href="/resource/favicon.ico">
     <link href="/resource/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="/resource/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
@@ -56,18 +56,20 @@
 
 <script type="application/javascript">
     var userId = location.search.substring(1);//获取查询串
-    var users = {};
-    //获取所有的角色
-    getStaff();
-    function getStaff() {
+    var roleIds = new Array();
+
+    // 去关联表中查找 当前用户 所拥有的 角色
+    getRoleByUserId(userId);
+
+    function getRoleByUserId(userId) {
         $.ajax({
-            type: "POST",
-            url: "/users/getById",
+            type: "GET",
+            url: "/userRole/getRoleByUserId",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
             data: {
-                id: userId
+                userId: userId
             },
             async: false,
             datatype: "json",
@@ -77,9 +79,12 @@
                 } else if (data.code == '200') {
                     data = data.data;
                     if (data != null) {
-                        users = data;
-                        searchAll(0);
+                        for(var i=0; i<data.length; i++){
+                            roleIds.push(data[i]);
+                        }
                     }
+                    // 查找所有的 角色
+                    searchAll(0);
                 } else {
                     layer.msg(data.message);
                 }
@@ -90,7 +95,7 @@
 
     function searchAll(pageNumber) {
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: "/role/getAll",
             'headers': {
                 'x-auth-token': $.cookie('token')
@@ -110,9 +115,9 @@
                         $("#roleTable tbody").empty();
                         for (var i = 0; i < data.content.length; i++) {
                             var isHave = false;
-                            if (users.role != null && users.role.length > 0) {
-                                for (var j = 0; j < users.role.length; j++) {
-                                    if (users.role[j].id == data.content[i].id) {
+                            if (roleIds != null && roleIds.length > 0) {
+                                for (var j = 0; j < roleIds.length; j++) {
+                                    if (roleIds[j] == data.content[i].id) {
                                         isHave = true;
                                     }
                                 }
@@ -123,8 +128,8 @@
                             }
                             $("#roleTable tbody").append("<tr>" +
                                 "<th>" + inputText + (i + 1) + "</th>" +
-                                "<th>" + checkedStr(data.content[i].roleName) + "</th>" +
-                                "<th>" + checkedStr(data.content[i].roleCode) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].name) + "</th>" +
+                                "<th>" + checkedStr(data.content[i].code) + "</th>" +
                                 "</tr>");
                         }
                     }
@@ -137,27 +142,28 @@
     }
 
     function setStaffRole() {
-        var role = new Array();
+        var roleIdList = new Array();
         $("#roleTable tbody input[type=checkbox]").each(function () {
             if ($(this).is(':checked')) {
-                var roles = {};
-                roles.id = $(this).attr("data");
-                role.push(roles);
+                var id = $(this).attr("data");
+                roleIdList.push(id);
             }
         });
-        if (role.length <= 0) {
+        if (roleIdList.length <= 0) {
             layer.msg("请选择要设置的角色");
             return false;
         }
-        users.role = role;
+        var roleIdStr = roleIdList.join(",");
         $.ajax({
             type: "POST",
-            url: "/users/update",
+            url: "/userRole/setUserRole",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(users),
+            data: {
+                roleIdStr:roleIdStr,
+                userId:userId
+            },
             datatype: "json",
             success: function (data) {
                 if (data.code == '1003') {

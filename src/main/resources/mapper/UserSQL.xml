@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.isbing.authority.permission.dao.UserDao">
+    <resultMap id="userResult" type="com.isbing.authority.permission.entity.User">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="selectSQL">
+        select id,user_name,nick_name,password,create_time from `user`
+    </sql>
+
+    <select id="getAll" resultMap="userResult">
+        <include refid="selectSQL"/>
+        order by create_time desc
+    </select>
+
+    <insert id="insert" parameterType="com.isbing.authority.permission.entity.User">
+        insert into `user`(user_name,nick_name,password,create_time) values(#{userName},#{nickName},#{password},now())
+        <selectKey keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <select id="getById" parameterType="int" resultMap="userResult">
+        <include refid="selectSQL"/>
+        where id = #{value}
+    </select>
+
+    <update id="update" parameterType="com.isbing.authority.permission.entity.User">
+        update `user`
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

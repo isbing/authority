@@ -19,4 +19,6 @@ public interface RoleDao {
 	Role getById(int id);
 
 	void update(Role role);
+
+	List<Role> findByIds(List<Integer> roleIdList);
 }

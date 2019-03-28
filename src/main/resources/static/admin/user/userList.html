@@ -36,7 +36,7 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>客服名</th>
+                            <th>用户名</th>
                             <th>昵称</th>
                             <th>已拥有角色</th>
                             <th colspan="2">操作</th>
@@ -65,8 +65,8 @@
     searchAll(0);
     function searchAll(pageNumber) {
         $.ajax({
-            type: "POST",
-            url: "/users/getAll",
+            type: "GET",
+            url: "/user/getAll",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
@@ -87,9 +87,9 @@
                                 "<th>" + checkedStr(data.content[i].id) + "</th>" +
                                 "<th>" + checkedStr(data.content[i].userName) + "</th>" +
                                 "<th>" + checkedStr(data.content[i].nickName) + "</th>" +
-                                "<th>" + checkedStr() + "</th>" +
-                                "<th><a onclick='setRole(\"" + data.content[i].id + "\")'>修改角色</a></th>" +
-                                "<th><a onclick='updateRole(\"" + data.content[i].id + "\")'>查看详情</a></th>" +
+                                "<th>" + checkedStr(data.content[i].roleStr) + "</th>" +
+                                "<th><a onclick='setRole(\"" + data.content[i].id + "\")'>设置角色</a></th>" +
+                                "<th><a onclick='updateRole(\"" + data.content[i].id + "\")'>修改用户</a></th>" +
                                 "</tr>");
                         }
 
@@ -110,7 +110,7 @@
             shade: false,
             maxmin: true, //开启最大化最小化按钮
             area: ['1000px', '600px'],
-            content: '/admin/staff/addUsers.html?',
+            content: '/admin/user/addUser.html?',
             end: function () {
                 searchAll(0);
             }
@@ -146,7 +146,7 @@
             shade: false,
             maxmin: true, //开启最大化最小化按钮
             area: ['1000px', '600px'],
-            content: '/admin/staff/updateStaffRole.html?' + id
+            content: '/admin/user/updateUserRole.html?' + id
         });
     }
 

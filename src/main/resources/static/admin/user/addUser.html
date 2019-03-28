@@ -21,7 +21,7 @@
         <div id="tab-1" class="tab-pane active">
             <div class="row m-t-sm m-b-sm">
                 <div style="padding-top: 7px; float: left;margin-left: 15px">
-                    <button onclick="addUsers()" type="button" class="btn btn-sm btn-primary"> 确定
+                    <button onclick="addUser()" type="button" class="btn btn-sm btn-primary"> 确定
                     </button>
                 </div>
             </div>
@@ -79,21 +79,19 @@
         if (isNull) {
             return false;
         }
-
-        var users = {};
-        users.userName = $("#userName").val();
-        users.nickName = $("#nickName").val();
-        users.password = $("#password").val();
-
+        var user = {};
+        user.userName = $("#userName").val();
+        user.nickName = $("#nickName").val();
+        user.password = $("#password").val();
 
         $.ajax({
             type: "POST",
-            url: "/users/create",
+            url: "/user/create",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(users),
+            data: JSON.stringify(user),
             dataType: "json",
             success: function (data) {
                 if (data.code == '1003') {
@@ -101,7 +99,6 @@
                 } else if (data.code == '200') {
                     layer.msg("提交成功!");
                     setTimeout(closeIndex(), 1000);
-
                 } else {
                     layer.msg(data.message);
                 }

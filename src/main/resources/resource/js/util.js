@@ -978,7 +978,7 @@ function getEnum(type, id, async) {
 function getAllStaff(id) {
     $.ajax({
         type: "POST",
-        url: "/staff/getall",
+        url: "/user/getall",
         'headers': {
             'x-auth-token': $.cookie('token')
         },

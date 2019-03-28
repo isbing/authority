@@ -29,8 +29,7 @@ public class RolePermissionController {
 	@ResponseBody
 	public void setRolePermission(@RequestParam(value = "roleId") int roleId,
 								@RequestParam(value = "permissionIds") String permissionIds){
-
-
+		rolePermissionService.setRolePermission(roleId,permissionIds);
 	}
 
 

@@ -6,6 +6,7 @@ import com.isbing.authority.permission.entity.Role;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by song bing
@@ -31,5 +32,9 @@ public class RoleService {
 
 	public void update(Role role) {
 		roleDao.update(role);
+	}
+
+	public List<Role> findByIds(List<Integer> roleIdList) {
+		return roleDao.findByIds(roleIdList);
 	}
 }

@@ -15,4 +15,16 @@
         where role_id = #{value}
     </select>
 
+
+    <insert id="insertRolePermission" parameterType="java.util.List">
+        insert into role_permission(role_id,permission_id)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.roleId},#{item.permissionId})
+        </foreach>
+    </insert>
+
+    <delete id="clearPermission" parameterType="int">
+        delete from role_permission where role_id = #{value}
+    </delete>
 </mapper>
