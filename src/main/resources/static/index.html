@@ -28,7 +28,7 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
-                    <div class="dropdown profile-element">
+                    <div class="dropdown profile-element" style="padding-left: 36px;">
                         <span><img alt="image" src="http://51zouchuqu.com/images/logo.png" style="width: 100px;"/></span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
@@ -37,43 +37,11 @@
                                 </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li class="divider"></li>
-                            <li><a href="login.html">安全退出</a>
-                            </li>
+                            <li><a href="/logout">安全退出</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">H+
                     </div>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-home"></i>
-                        <span class="nav-label">菜单管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="admin/menu/menuList.html" data-index="0">菜单列表</a>
-                        </li>
-                    </ul>
-
-                    <a href="#">
-                        <i class="fa fa-home"></i>
-                        <span class="nav-label">安全管理</span>
-                        <span class="fa arrow"></span>
-                    </a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a class="J_menuItem" href="admin/permission/permissionList.html" data-index="0">权限管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="admin/role/roleList.html" data-index="0">角色管理</a>
-                        </li>
-                        <li>
-                            <a class="J_menuItem" href="admin/user/userList.html" data-index="0">用户管理</a>
-                        </li>
-                    </ul>
-
                 </li>
 
             </ul>
@@ -84,7 +52,9 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                        class="fa fa-bars"></i> </a>
+
                     <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
                         <div class="form-group">
                             <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
@@ -98,7 +68,7 @@
             </button>
             <nav class="page-tabs J_menuTabs">
                 <div class="page-tabs-content">
-                    <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>
+                    <a href="javascript:;" class="active J_menuTab" data-id="/admin/home.html">主页</a>
                 </div>
             </nav>
             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
@@ -117,39 +87,145 @@
                     </li>
                 </ul>
             </div>
-            <a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            <a href="/logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v1.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/admin/home.html" frameborder="0"
+                    data-id="/admin/home.html" seamless></iframe>
         </div>
-
     </div>
     <!--右侧部分结束-->
-    <!--右侧边栏开始-->
-    <div id="right-sidebar">
-        <div class="sidebar-container">
-
-            <ul class="nav nav-tabs navs-3">
-
-                <li class="active">
-                    <a data-toggle="tab" href="#tab-1">
-                        <i class="fa fa-gear"></i> 主题
-                    </a>
-                </li>
-                <li class=""><a data-toggle="tab" href="#tab-2">
-                    通知
-                </a>
-                </li>
-                <li><a data-toggle="tab" href="#tab-3">
-                    项目进度
-                </a>
-                </li>
-            </ul>
 
 
-        </div>
-    </div>
-    <!--右侧边栏结束-->
+    <!--&lt;!&ndash;左侧导航开始&ndash;&gt;-->
+    <!--<nav class="navbar-default navbar-static-side" role="navigation">-->
+    <!--<div class="nav-close"><i class="fa fa-times-circle"></i>-->
+    <!--</div>-->
+    <!--<div class="sidebar-collapse">-->
+    <!--<ul class="nav" id="side-menu">-->
+    <!--<li class="nav-header">-->
+    <!--<div class="dropdown profile-element">-->
+    <!--<span><img alt="image" src="http://51zouchuqu.com/images/logo.png" style="width: 100px;"/></span>-->
+    <!--<a data-toggle="dropdown" class="dropdown-toggle" href="#">-->
+    <!--<span class="clear">-->
+    <!--<span class="block m-t-xs"><strong class="font-bold" id="userName"></strong></span>-->
+    <!--<span class="text-muted text-xs block"><b id="userRole"></b><b class="caret"></b></span>-->
+    <!--</span>-->
+    <!--</a>-->
+    <!--<ul class="dropdown-menu animated fadeInRight m-t-xs">-->
+    <!--<li class="divider"></li>-->
+    <!--<li><a href="login.html">安全退出</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--<div class="logo-element">H+-->
+    <!--</div>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<a href="#">-->
+    <!--<i class="fa fa-home"></i>-->
+    <!--<span class="nav-label">菜单管理</span>-->
+    <!--<span class="fa arrow"></span>-->
+    <!--</a>-->
+    <!--<ul class="nav nav-second-level">-->
+    <!--<li>-->
+    <!--<a class="J_menuItem" href="admin/menu/menuList.html" data-index="0">菜单列表</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+
+    <!--<a href="#">-->
+    <!--<i class="fa fa-home"></i>-->
+    <!--<span class="nav-label">安全管理</span>-->
+    <!--<span class="fa arrow"></span>-->
+    <!--</a>-->
+    <!--<ul class="nav nav-second-level">-->
+    <!--<li>-->
+    <!--<a class="J_menuItem" href="admin/permission/permissionList.html" data-index="0">权限管理</a>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<a class="J_menuItem" href="admin/role/roleList.html" data-index="0">角色管理</a>-->
+    <!--</li>-->
+    <!--<li>-->
+    <!--<a class="J_menuItem" href="admin/user/userList.html" data-index="0">用户管理</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+
+    <!--</li>-->
+
+    <!--</ul>-->
+    <!--</div>-->
+    <!--</nav>-->
+    <!--&lt;!&ndash;左侧导航结束&ndash;&gt;-->
+    <!--&lt;!&ndash;右侧部分开始&ndash;&gt;-->
+    <!--<div id="page-wrapper" class="gray-bg dashbard-1">-->
+    <!--<div class="row border-bottom">-->
+    <!--<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">-->
+    <!--<div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>-->
+    <!--<form role="search" class="navbar-form-custom" method="post" action="search_results.html">-->
+    <!--<div class="form-group">-->
+    <!--<input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">-->
+    <!--</div>-->
+    <!--</form>-->
+    <!--</div>-->
+    <!--</nav>-->
+    <!--</div>-->
+    <!--<div class="row content-tabs">-->
+    <!--<button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>-->
+    <!--</button>-->
+    <!--<nav class="page-tabs J_menuTabs">-->
+    <!--<div class="page-tabs-content">-->
+    <!--<a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">首页</a>-->
+    <!--</div>-->
+    <!--</nav>-->
+    <!--<button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>-->
+    <!--</button>-->
+    <!--<div class="btn-group roll-nav roll-right">-->
+    <!--<button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>-->
+
+    <!--</button>-->
+    <!--<ul role="menu" class="dropdown-menu dropdown-menu-right">-->
+    <!--<li class="J_tabShowActive"><a>定位当前选项卡</a>-->
+    <!--</li>-->
+    <!--<li class="divider"></li>-->
+    <!--<li class="J_tabCloseAll"><a>关闭全部选项卡</a>-->
+    <!--</li>-->
+    <!--<li class="J_tabCloseOther"><a>关闭其他选项卡</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <!--<a href="login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>-->
+    <!--</div>-->
+    <!--<div class="row J_mainContent" id="content-main">-->
+    <!--<iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v1.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>-->
+    <!--</div>-->
+
+    <!--</div>-->
+    <!--&lt;!&ndash;右侧部分结束&ndash;&gt;-->
+    <!--&lt;!&ndash;右侧边栏开始&ndash;&gt;-->
+    <!--<div id="right-sidebar">-->
+    <!--<div class="sidebar-container">-->
+
+    <!--<ul class="nav nav-tabs navs-3">-->
+
+    <!--<li class="active">-->
+    <!--<a data-toggle="tab" href="#tab-1">-->
+    <!--<i class="fa fa-gear"></i> 主题-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--<li class=""><a data-toggle="tab" href="#tab-2">-->
+    <!--通知-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--<li><a data-toggle="tab" href="#tab-3">-->
+    <!--项目进度-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+
+
+    <!--</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash;右侧边栏结束&ndash;&gt;-->
 </div>
 
 <!-- 全局js -->
@@ -165,17 +241,84 @@
 
 <!-- 第三方插件 -->
 <script src="/resource/js/plugins/pace/pace.min.js"></script>
-
-
-
-<!--<script src="/resource/js/jquery.cookie.js"></script>-->
-<!--<script src="/resource/js/util.js"></script>-->
+<script src="/resource/js/jquery.cookie.js"></script>
+<script src="/resource/js/util.js"></script>
 
 
 <script type="application/javascript">
+    $(document).ready(function () {
+        //获取用户信息
+        getUser(addJs);
+    });
+
+    //添加js
+    function addJs() {
+        var oHead = document.getElementsByTagName('HEAD').item(0);
+        var oScript3 = document.createElement("script");
+        oScript3.src = "/resource/js/hplus.js?v=4.0.0";
+        oHead.appendChild(oScript3);
+        var oScript4 = document.createElement("script");
+        oScript4.src = "/resource/js/contabs.js";
+        oHead.appendChild(oScript4);
+    }
 
 
+    function getUser(callback) {
+        $.ajax({
+            url: "/getUser",
+            dataType: "json",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            async: false,
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/signin.html";
+                    return false;
+                } else if (data.code == '200') {
+                    data = data.data;
+                    //用户信息
+                    $("#userName").html(data.user.name);
+                    if (data.user.role != null) {
+                        $("#userRole").html(data.userName);
+                    }
+                    if (isEmptyObject(data.menuUrl)) {
+                        window.location = "/noPerm.html";
+                    }
+                    //菜单权限
+                    if (data.menuUrl != null) {
+                        for (var key in data.menuUrl) {
+                            var li = "";
+                            for (var val in data.menuUrl[key]) {
+                                li += '<li><a class="J_menuItem" href=' + data.menuUrl[key][val] + ' data-index="0">' + val + '</a></li>';
+                            }
+                            $("#side-menu").append('<li><a>' + key + '<span class="fa arrow"></span></a><ul class="nav nav-second-level collapse">' + li + '</ul></li>');
+                        }
 
+                    }
+                    //角色
+                    var authorities = data.user.authorities;
+                    var role = "";
+                    $.each(authorities, function (i) {
+                        role += authorities[i].authority + "/";
+                    });
+                    if (window.localStorage) {
+                        localStorage.setItem("authorities", role);
+                    } else {
+                        $.cookie('authorities', role, {path: "/"});
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+                callback();
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                layer.msg("获取用户信息失败");
+                window.location = "/signin.html";
+                callback();
+            }
+        });
+    }
 </script>
 
 

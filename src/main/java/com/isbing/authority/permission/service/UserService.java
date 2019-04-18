@@ -62,4 +62,8 @@ public class UserService {
 	public void update(User user) {
 		userDao.update(user);
 	}
+
+	public User getByUsername(String username) {
+		return userDao.getByUsername(username);
+	}
 }

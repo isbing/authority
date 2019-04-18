@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by song bing
@@ -23,4 +25,9 @@ public class User {
 	private Date createTime;//创建时间
 
 	private String roleStr;
+
+	private Set<Role> role = new LinkedHashSet<>();//角色
+	private Set<Menu> menus = new LinkedHashSet<>();//菜单
+
+
 }

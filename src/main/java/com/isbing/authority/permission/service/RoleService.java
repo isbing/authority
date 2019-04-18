@@ -1,5 +1,6 @@
 package com.isbing.authority.permission.service;
 
+import com.google.common.collect.Sets;
 import com.isbing.authority.permission.dao.RoleDao;
 import com.isbing.authority.permission.entity.PageBean;
 import com.isbing.authority.permission.entity.Role;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by song bing

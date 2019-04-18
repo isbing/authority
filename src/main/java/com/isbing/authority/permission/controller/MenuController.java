@@ -3,6 +3,7 @@ package com.isbing.authority.permission.controller;
 import com.isbing.authority.permission.entity.Menu;
 import com.isbing.authority.permission.entity.PageBean;
 import com.isbing.authority.permission.service.MenuService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +74,7 @@ public class MenuController {
 		return menuService.getById(id);
 	}
 
+	@PreAuthorize("hasAnyRole('MENU')")
 	@PutMapping("update")
 	@ResponseBody
 	public void update(@RequestBody Menu menu){

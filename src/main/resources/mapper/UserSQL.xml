@@ -30,6 +30,11 @@
         where id = #{value}
     </select>
 
+    <select id="getByUsername" parameterType="string" resultMap="userResult">
+        <include refid="selectSQL"/>
+        where user_name = #{value}
+    </select>
+
     <update id="update" parameterType="com.isbing.authority.permission.entity.User">
         update `user`
         <set>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="shortcut icon" href="/resource/favicon.ico">
+    <link href="/resource/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="/resource/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <link href="/resource/css/animate.css" rel="stylesheet">
+    <link href="/resource/css/style.css?v=4.0.0" rel="stylesheet">
+    <!--[if lt IE 8]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <script>if (window.top !== window.self) {
+        window.top.location = window.location;
+    }</script>
+</head>
+
+<body style="background: -webkit-radial-gradient(0% 100%, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg, #670d10 0%,#092756 100%);">
+
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <!--<div style="height: 100px;">-->
+    <!--<h1 class="logo-name">xxx</h1>-->
+    <!--</div>-->
+    <h3>欢迎使用</h3>
+    <div class="form-horizontal m-t-lg">
+        <form class="m-t" method="post" action="/login">
+            <div class="form-group">
+                <input id="username" name="username" value="" class="form-control" placeholder="用户名">
+                <!--<input id="userType" name="userType" type="hidden">-->
+            </div>
+            <!--<div class="form-group" id="pic_div" style="display: none">-->
+            <!--<div style="width: 45%;float: left">-->
+            <!--<input id="picVericode" name="picVericode" type="input" class="form-control" placeholder="输入图片验证码">-->
+            <!--</div>-->
+            <!--<div style="width: 45%;float: right;" align="right">-->
+            <!--<img onclick="reImg(this);" id="pic" src="" style="height: 33px;cursor: pointer">-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="form-group">
+                <div style="width: 45%;float: left">
+                    <input name="password" type="password" class="form-control" placeholder="密码">
+                </div>
+                <!--<div style="width: 45%;float: right;">-->
+                <!--<input type="button" class="btn btn-sm btn-primary block pull-right" id="btn" value="免费获取验证码" onclick="sendSms(this)"/>-->
+                <!--</div>-->
+            </div>
+            <div class="form-group pull-left height-20 m-t-n-sm">
+                <label class="col-sm-12 control-label passwordMsg width-300" id="passwordMsg"></label>
+            </div>
+
+            <div class="form-group">
+                <!--<div style="width: 45%;float: left">-->
+                <!--<a href="/enterprise/apply.html" class="btn btn-primary block full-width m-b">注 册</a>-->
+                <!--</div>-->
+                <div style="width: 45%;float: right;">
+                    <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="/resource/js/bootstrap.min.js?v=3.3.5"></script>
+<script src="/resource/js/jquery.cookie.js"></script>
+<script src="/resource/js/plugins/layer/layer.min.js"></script>
+<script src="/resource/js/util.js"></script>
+<script type="application/javascript">
+    $(document).ready(function () {
+
+        $('form').bind('submit', function () {
+            ajaxSubmit(this, function (data) {
+                if (data.code == "1000") {
+                    data = data.data;
+                    if (isEmptyObject(data.menuUrl)) {
+                        window.location = "/noPerm.html";
+                        return false;
+                    }
+                    var date = new Date();
+                    date.setTime(date.getTime() + (1 * 30 * 24 * 60 * 60 * 1000));//一个月
+                    $.cookie('token', data.token, {path: "/", expires: date});
+                    window.location.replace("/index.html");
+                } else {
+                    $("#passwordMsg").html(data.message);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+</body>
+
+</html>
