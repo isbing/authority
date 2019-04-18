@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新增角色</title>
+    <title>修改用户信息</title>
     <link rel="shortcut icon" href="/resource/favicon.ico">
     <link href="/resource/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="/resource/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
@@ -21,7 +21,7 @@
         <div id="tab-1" class="tab-pane active">
             <div class="row m-t-sm m-b-sm">
                 <div style="padding-top: 7px; float: left;margin-left: 15px">
-                    <button onclick="addUser()" type="button" class="btn btn-sm btn-primary"> 确定
+                    <button onclick="updateUser()" type="button" class="btn btn-sm btn-primary"> 确定
                     </button>
                 </div>
             </div>
@@ -32,7 +32,8 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户名：</label>
                             <div class="col-sm-9">
-                                <input id="userName" placeholder="用户名" name="userName" class="form-control notNull" type="text">
+                                <input id="userName" placeholder="用户名" name="userName" class="form-control notNull"
+                                       type="text">
                             </div>
                         </div>
 
@@ -50,6 +51,7 @@
                             </div>
                         </div>
 
+
                     </div>
                 </div>
             </div>
@@ -66,8 +68,39 @@
 <script src="/resource/js/util.js"></script>
 
 <script type="application/javascript">
+    var userId = location.search.substring(1);
+    getById(userId);
 
-    function addUser() {
+    function getById(id) {
+        $.ajax({
+            type: "GET",
+            url: "/user/getById",
+            'headers': {
+                'x-auth-token': $.cookie('token')
+            },
+            data: {
+                id: id
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.code == '1003') {
+                    window.location = "/admin/signin.html";
+                } else if (data.code == '200') {
+                    data = data.data;
+                    if (data != null) {
+                        $("#userName").val(data.userName);
+                        $("#nickName").val(data.nickName);
+                        $("#password").val(data.password);
+                    }
+                } else {
+                    layer.msg(data.message);
+                }
+            }
+        });
+    }
+
+
+    function updateUser() {
         var isNull = false;
         $(".notNull").each(function () {
             if ($(this).val() == null || $(this).val() == "") {
@@ -83,16 +116,17 @@
         user.userName = $("#userName").val();
         user.nickName = $("#nickName").val();
         user.password = $("#password").val();
+        user.id = userId;
 
         $.ajax({
-            type: "POST",
-            url: "/user/create",
+            type: "PUT",
+            url: "/user/update",
             'headers': {
                 'x-auth-token': $.cookie('token')
             },
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(user),
-            dataType: "json",
+            datatype: "json",
             success: function (data) {
                 if (data.code == '1003') {
                     window.location = "/signin.html";
@@ -105,7 +139,6 @@
             }
         });
     }
-
 
     function closeIndex() {
         var index = parent.layer.getFrameIndex(window.name); //获取当前窗体索引

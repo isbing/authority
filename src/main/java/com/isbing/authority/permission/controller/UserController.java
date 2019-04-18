@@ -31,4 +31,17 @@ public class UserController {
 	public PageBean getAll(){
 		return userService.getAll();
 	}
+
+	@GetMapping("getById")
+	@ResponseBody
+	public User getById(@RequestParam(value = "id") Integer id) {
+		return userService.getById(id);
+	}
+
+	@PutMapping("update")
+	@ResponseBody
+	public void update(@RequestBody User user) {
+		userService.update(user);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.isbing.authority.permission.service;
 
+import com.isbing.authority.common.util.JsonUtil;
 import com.isbing.authority.permission.dao.UserDao;
 import com.isbing.authority.permission.entity.PageBean;
 import com.isbing.authority.permission.entity.Role;
@@ -38,16 +39,27 @@ public class UserService {
 			userList.forEach(user -> {
 				int userId = user.getId();
 				List<Integer> roleIdList = userRoleService.getRoleByUserId(userId);
-				List<Role> roleList = roleService.findByIds(roleIdList);
-				if(CollectionUtils.isNotEmpty(roleList)){
-					List<String> roleNameList = roleList.stream().map(Role::getName).collect(Collectors.toList());
-					StringBuilder sb = new StringBuilder();
-					roleNameList.forEach(roleName -> sb.append(roleName).append("，"));
-					// 设置 用户已拥有的角色
-					user.setRoleStr(sb.toString());
+				if (CollectionUtils.isNotEmpty(roleIdList)) {
+					List<Role> roleList = roleService.findByIds(roleIdList);
+					if (CollectionUtils.isNotEmpty(roleList)) {
+						List<String> roleNameList = roleList.stream().map(Role::getName).collect(Collectors.toList());
+						StringBuilder sb = new StringBuilder();
+						roleNameList.forEach(roleName -> sb.append(roleName).append("，"));
+						String str = sb.toString();
+						// 设置 用户已拥有的角色
+						user.setRoleStr(str.substring(0, str.lastIndexOf("，")));
+					}
 				}
 			});
 		}
 		return PageBean.builder().content(userList).build();
+	}
+
+	public User getById(Integer id) {
+		return userDao.getById(id);
+	}
+
+	public void update(User user) {
+		userDao.update(user);
 	}
 }

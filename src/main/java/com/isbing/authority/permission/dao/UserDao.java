@@ -15,4 +15,8 @@ public interface UserDao {
 	void insert(User user);
 
 	List<User> getAll();
+
+	User getById(Integer id);
+
+	void update(User user);
 }

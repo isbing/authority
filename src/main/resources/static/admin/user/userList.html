@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>客服管理</title>
+    <title>用户管理</title>
     <link rel="shortcut icon" href="/resource/favicon.ico">
     <link href="/resource/css/dataTables.bootstrap.css" rel="stylesheet">
     <link href="/resource/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
@@ -25,7 +25,9 @@
                         <button onclick="refresh()" type="button" class="btn btn-primary btn-sm"><i class="fa fa-refresh"></i> 刷新当前页面</button>
                     </div>
                     <div class="pull-left m-l-sm">
-                        <button onclick="addUsers()" type="button" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 新增角色</button>
+                        <button onclick="addUsers()" type="button" class="btn btn-sm btn-primary"><i
+                                class="fa fa-plus"></i> 新增用户
+                        </button>
                     </div>
                 </div>
             </div>
@@ -88,8 +90,8 @@
                                 "<th>" + checkedStr(data.content[i].userName) + "</th>" +
                                 "<th>" + checkedStr(data.content[i].nickName) + "</th>" +
                                 "<th>" + checkedStr(data.content[i].roleStr) + "</th>" +
-                                "<th><a onclick='setRole(\"" + data.content[i].id + "\")'>设置角色</a></th>" +
-                                "<th><a onclick='updateRole(\"" + data.content[i].id + "\")'>修改用户</a></th>" +
+                                "<th><a onclick='setRole(\"" + data.content[i].id + "\")'>设置用户的角色</a></th>" +
+                                "<th><a onclick='updateUser(\"" + data.content[i].id + "\")'>修改用户</a></th>" +
                                 "</tr>");
                         }
 
@@ -110,7 +112,7 @@
             shade: false,
             maxmin: true, //开启最大化最小化按钮
             area: ['1000px', '600px'],
-            content: '/admin/user/addUser.html?',
+            content: '/admin/user/addUser.html',
             end: function () {
                 searchAll(0);
             }
@@ -118,7 +120,7 @@
     }
 
     //修改角色
-    function updateRole(id) {
+    function updateUser(id) {
         parent.layer.open({
             type: 2,
             title: "修改菜单信息",
@@ -126,11 +128,8 @@
             shade: false,
             maxmin: true, //开启最大化最小化按钮
             area: ['1000px', '500px'],
-            content: '/admin/role/updateRole.html?' + id,
+            content: '/admin/user/updateUser.html?' + id,
             end: function () {
-                // if (pageNum < 0) {
-                //     pageNum = 0;
-                // }
                 searchAll(0);
             }
         });
