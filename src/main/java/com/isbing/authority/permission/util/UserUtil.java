@@ -27,6 +27,9 @@ public class UserUtil {
 		User user = userService.getByUsername(username);//后台客服,管理员
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("user", currentUser);//用户信息全部信息
+		// 设置后台客服的 菜单 角色
+		user.setMenus(currentUser.getMenus());
+		user.setRole(currentUser.getRole());
 		map.put("staff", user);//后台管理员
 		map.put("userName", user.getNickName());
 		map.put("menuUrl", getStaffMenu(currentUser.getMenus(), menuService));//后台管理菜单

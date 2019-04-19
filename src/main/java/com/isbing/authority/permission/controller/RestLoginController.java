@@ -1,12 +1,12 @@
 package com.isbing.authority.permission.controller;
 
+import com.google.common.collect.Maps;
 import com.isbing.authority.common.entity.CommonResponse;
-import com.isbing.authority.common.util.JsonUtil;
 import com.isbing.authority.permission.entity.CurrentUser;
-import com.isbing.authority.permission.entity.User;
 import com.isbing.authority.permission.service.MenuService;
 import com.isbing.authority.permission.service.UserService;
 import com.isbing.authority.permission.util.UserUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -57,7 +58,7 @@ public class RestLoginController {
 		//权限拒绝重新登录
 		CommonResponse result = new CommonResponse();
 		result.setCode(1003);
-		result.setMessage("您还未登录走出趣,请登录后再操作");
+		result.setMessage("您还未登录,请登录后再操作");
 		return result;
 	}
 
@@ -69,13 +70,20 @@ public class RestLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
 	public Map getUser(HttpServletRequest request) {
-		CurrentUser currentUser = (CurrentUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userService.getById(currentUser.getId());
-		UserUtil.loadUserRole(request, user);
-		user = menuService.getMenusByUser(user);
-		currentUser = new CurrentUser(user);
-		System.out.println(JsonUtil.toJson(UserUtil.getUser(currentUser, userService, menuService)));
-		return UserUtil.getUser(currentUser, userService, menuService);
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof CurrentUser) {
+			CurrentUser currentUser = (CurrentUser) principal;
+			return UserUtil.getUser(currentUser, userService, menuService);
+		} else {
+			Map<String, Object> data = Maps.newHashMap();
+			data.put("code", 1003);
+			return data;
+		}
+		//		User user = userService.getById(currentUser.getId());
+		//		// todo 这里重新加载 权限就没了
+		//		// UserUtil.loadUserRole(request, user);
+		//		user = menuService.getMenusByUser(user);
+		//		currentUser = new CurrentUser(user);
 	}
 
 	/**

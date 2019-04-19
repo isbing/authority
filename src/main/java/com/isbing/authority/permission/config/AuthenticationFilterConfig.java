@@ -1,5 +1,6 @@
 package com.isbing.authority.permission.config;
 
+import com.isbing.authority.common.util.JsonUtil;
 import com.isbing.authority.permission.entity.CurrentUser;
 import com.isbing.authority.permission.entity.User;
 import com.isbing.authority.permission.service.MenuService;
@@ -7,9 +8,12 @@ import com.isbing.authority.permission.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;

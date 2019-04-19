@@ -1,5 +1,6 @@
 package com.isbing.authority.permission.controller;
 
+
 import com.isbing.authority.permission.entity.Menu;
 import com.isbing.authority.permission.entity.PageBean;
 import com.isbing.authority.permission.service.MenuService;
@@ -25,6 +26,7 @@ public class MenuController {
 	 * 找所有菜单的一级菜单
 	 * @return
 	 */
+	@PreAuthorize("hasAnyRole('ROLE_MENU')")
 	@GetMapping("getAllFirstLevel")
 	@ResponseBody
 	public PageBean getAllFirstLevel(){
@@ -36,6 +38,7 @@ public class MenuController {
 	 * 找所有菜单的二级菜单
 	 * @return
 	 */
+	@PreAuthorize("hasAnyRole('ROLE_MENU')")
 	@GetMapping("getAllSecondLevel")
 	@ResponseBody
 	public List<Menu> getAllSecondLevel(@RequestParam(value = "parentId",required = false) int parentId){
@@ -47,6 +50,7 @@ public class MenuController {
 	 * 找所有菜单的二级菜单
 	 * @return
 	 */
+	@PreAuthorize("hasAnyRole('ROLE_MENU')")
 	@GetMapping("getAllSecondLevelNoId")
 	@ResponseBody
 	public List<Menu> getAllSecondLevelNoId(){
@@ -57,6 +61,7 @@ public class MenuController {
 	 * 新增一级菜单
 	 * @return
 	 */
+	@PreAuthorize("hasAnyRole('ROLE_MENU')")
 	@PostMapping("create")
 	@ResponseBody
 	public Integer create(@RequestBody Menu menu){
@@ -68,13 +73,14 @@ public class MenuController {
 	 * @param id
 	 * @return
 	 */
+	@PreAuthorize("hasAnyRole('ROLE_MENU')")
 	@GetMapping("getById")
 	@ResponseBody
 	public Menu getById(@RequestParam(value = "id") Integer id){
 		return menuService.getById(id);
 	}
 
-	@PreAuthorize("hasAnyRole('MENU')")
+	@PreAuthorize("hasAnyRole('ROLE_MENU')")
 	@PutMapping("update")
 	@ResponseBody
 	public void update(@RequestBody Menu menu){

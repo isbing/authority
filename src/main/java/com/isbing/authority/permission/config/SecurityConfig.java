@@ -2,7 +2,9 @@ package com.isbing.authority.permission.config;
 
 import com.isbing.authority.permission.service.MenuService;
 import com.isbing.authority.permission.service.UserService;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -41,10 +43,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 				.antMatchers("/", "/signin.html", "/index.html", "/noPerm.html").permitAll()//登录相关
-				//.antMatchers("/menu/**").permitAll()
-				//.anyRequest().authenticated()//默认都能访问
-				//.antMatchers("/","/hello").permitAll()//定义/请求不需要验证
-				.anyRequest().authenticated()//其余的所有请求都需要验证
+				//				.antMatchers("/menu/**").permitAll()
+				//				.antMatchers("/menu/**").permitAll()
+				//				.antMatchers("/menu/**").permitAll()
+				//				.antMatchers("/menu/**").permitAll()
+				.antMatchers("/admin/**", "/function/**").permitAll()
+				//				.anyRequest().authenticated()//其余的所有请求都需要验证
 				.and()
 				.formLogin()
 				.loginPage("/login")
@@ -64,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement()
 				.maximumSessions(1)
 				.expiredUrl("/login?expired");
+		// 在这个过滤器之前 加入自己的过滤器
 		http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 	}
