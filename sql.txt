@@ -1,0 +1,112 @@
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) DEFAULT NULL COMMENT '菜单名',
+  `icon` varchar(30) DEFAULT NULL COMMENT '一级菜单图标',
+  `url` varchar(255) DEFAULT NULL COMMENT '二级菜单的url(页面的地址)',
+  `parent_id` int(11) DEFAULT NULL COMMENT '二级菜单的父亲',
+  `sort` int(11) DEFAULT NULL COMMENT '排序字段',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `menu` VALUES ('1', '安全管理', 'fa fa-get-pocket', '<i class=\'fa fa-get-pocket\'></i><span class=\'nav-label\'>&nbsp;安全管理</span>', null, '9999', '2019-04-18 17:58:25');
+INSERT INTO `menu` VALUES ('2', '菜单列表', null, '/admin/menu/menuList.html', '1', '4', '2019-04-18 18:06:10');
+INSERT INTO `menu` VALUES ('3', '权限列表', null, '/admin/permission/permissionList.html', '1', '3', '2019-04-18 18:07:27');
+INSERT INTO `menu` VALUES ('4', '角色管理', null, '/admin/role/roleList.html', '1', '2', '2019-04-18 18:07:55');
+INSERT INTO `menu` VALUES ('5', '用户管理', null, '/admin/user/userList.html', '1', '1', '2019-04-18 18:08:23');
+
+
+CREATE TABLE `permission` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `name` varchar(50) DEFAULT NULL COMMENT '权限名',
+  `code` varchar(50) DEFAULT NULL COMMENT '权限码',
+  `menu_id` int(11) DEFAULT NULL COMMENT '菜单ID',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `permission` VALUES ('1', '添加菜单权限', 'PERMISSION_MENU_ADD', '2', '2019-04-18 18:10:14');
+INSERT INTO `permission` VALUES ('2', '修改菜单权限', 'PERMISSION_MENU_UPDATE', '2', '2019-04-18 18:10:40');
+INSERT INTO `permission` VALUES ('3', '添加二级菜单权限', 'PERMISSION_MENU_SECOUND_ADD', '2', '2019-04-18 18:11:32');
+INSERT INTO `permission` VALUES ('4', '修改二级菜单权限', 'PERMISSION_MENU_SECOUND_UPDATE', '2', '2019-04-18 18:12:04');
+INSERT INTO `permission` VALUES ('5', '查询一级菜单权限', 'PERMISSION_MENU_SEARCH', '2', '2019-04-19 15:15:32');
+INSERT INTO `permission` VALUES ('6', '查询二级菜单权限', 'PERMISSION_MENU_SECOUND_SEARCH', '2', '2019-04-19 15:16:13');
+INSERT INTO `permission` VALUES ('7', '添加权限功能', 'PERMISSION_PERMIS_ADD', '3', '2019-04-19 15:21:02');
+INSERT INTO `permission` VALUES ('8', '查询权限功能', 'PERMISSION_PERMIS_SEARCH', '3', '2019-04-19 15:21:25');
+INSERT INTO `permission` VALUES ('9', '修改权限功能', 'PERMISSION_PERMIS_UPDATE', '3', '2019-04-19 15:21:48');
+INSERT INTO `permission` VALUES ('10', '添加角色功能', 'PERMISSION_ROLE_ADD', '4', '2019-04-19 15:31:44');
+INSERT INTO `permission` VALUES ('11', '添加用户功能', 'PERMISSION_USER_ADD', '5', '2019-04-19 15:34:28');
+INSERT INTO `permission` VALUES ('12', '给用户设置角色', 'PERMISSION_USER_SET_ROLE', '5', '2019-04-19 15:58:36');
+INSERT INTO `permission` VALUES ('13', '给角色设置权限', 'PERMISSION_ROLE_SET_PERMIS', '4', '2019-04-19 16:00:39');
+
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL COMMENT '角色名',
+  `code` varchar(50) DEFAULT NULL,
+  `create_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `role` VALUES ('1', '菜单操作权限', 'ROLE_MENU', '2019-04-18 18:12:47');
+INSERT INTO `role` VALUES ('2', '权限操作权限', 'ROLE_PERMIS', '2019-04-19 15:23:14');
+INSERT INTO `role` VALUES ('3', '角色操作权限', 'ROLE_ROLE', '2019-04-19 15:32:16');
+INSERT INTO `role` VALUES ('4', '用户操作权限', 'ROLE_USER', '2019-04-19 15:34:48');
+INSERT INTO `role` VALUES ('5', '管理员', 'ADMIN', '2019-04-19 15:49:38');
+
+CREATE TABLE `role_permission` (
+  `role_id` int(11) DEFAULT NULL,
+  `permission_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `role_permission` VALUES ('1', '1');
+INSERT INTO `role_permission` VALUES ('1', '2');
+INSERT INTO `role_permission` VALUES ('1', '3');
+INSERT INTO `role_permission` VALUES ('1', '4');
+INSERT INTO `role_permission` VALUES ('1', '5');
+INSERT INTO `role_permission` VALUES ('1', '6');
+INSERT INTO `role_permission` VALUES ('2', '7');
+INSERT INTO `role_permission` VALUES ('2', '8');
+INSERT INTO `role_permission` VALUES ('2', '9');
+INSERT INTO `role_permission` VALUES ('5', '11');
+INSERT INTO `role_permission` VALUES ('5', '10');
+INSERT INTO `role_permission` VALUES ('5', '9');
+INSERT INTO `role_permission` VALUES ('5', '8');
+INSERT INTO `role_permission` VALUES ('5', '7');
+INSERT INTO `role_permission` VALUES ('5', '6');
+INSERT INTO `role_permission` VALUES ('5', '5');
+INSERT INTO `role_permission` VALUES ('5', '4');
+INSERT INTO `role_permission` VALUES ('5', '3');
+INSERT INTO `role_permission` VALUES ('5', '2');
+INSERT INTO `role_permission` VALUES ('5', '1');
+INSERT INTO `role_permission` VALUES ('4', '12');
+INSERT INTO `role_permission` VALUES ('4', '11');
+INSERT INTO `role_permission` VALUES ('3', '13');
+INSERT INTO `role_permission` VALUES ('3', '10');
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(50) DEFAULT NULL COMMENT '用户名',
+  `nick_name` varchar(50) DEFAULT NULL COMMENT '昵称',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  `create_time` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `user` VALUES ('1', 'admin', 'admin', 'admin', '2019-04-18 10:41:55');
+INSERT INTO `user` VALUES ('2', 'songbing', '宋冰', '123456', '2019-04-18 11:12:07');
+INSERT INTO `user` VALUES ('4', 'test', '测试', '123', '2019-04-19 15:54:24');
+
+CREATE TABLE `user_role` (
+  `user_id` int(11) DEFAULT NULL,
+  `role_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `user_role` VALUES ('1', '5');
+INSERT INTO `user_role` VALUES ('1', '4');
+INSERT INTO `user_role` VALUES ('1', '3');
+INSERT INTO `user_role` VALUES ('1', '2');
+INSERT INTO `user_role` VALUES ('1', '1');
+INSERT INTO `user_role` VALUES ('4', '5');
+INSERT INTO `user_role` VALUES ('2', '4');
+INSERT INTO `user_role` VALUES ('2', '1');
